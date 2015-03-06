@@ -14,7 +14,7 @@ class Recipe:
 		self.quantities = []
 		# dictionary of ingredients mapped to their quantities. Key: ingredient, Value: quantity
 		self.mapping = {}
-		r = requests.get("http://allrecipes.com/Recipe/Amish-Meatloaf/Detail.aspx?soid=carousel_0_rotd&prop24=rotd")
+		r = requests.get(link)
 		self.markup = BeautifulSoup(r.text)
 
 	# find all ingredients in markup and return a list of all of them (in order)
