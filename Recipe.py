@@ -12,8 +12,11 @@ class Recipe:
 		self.ingredients = []
 		# list of the quantities of each ingredient
 		self.quantities = []
+		# list of directions from the webpage
+		self.directions = []
 		# dictionary of ingredients mapped to their quantities. Key: ingredient, Value: quantity
 		self.mapping = {}
+		# GET the markup of the URL and store it as a member
 		r = requests.get(link)
 		self.markup = BeautifulSoup(r.text)
 
@@ -50,10 +53,20 @@ class Recipe:
 		self.mapping = returnDict
 		return returnDict
 
+	# return the list of instructions on the webpage
+	def find_directions(self):
+		elements = self.markup.select('.directLeft')[0].find_all('li')
+		arr = []
+		for el in elements:
+			arr.append(el.text)
+
+		self.directions = arr
+		return arr
+
 
 # def main():
 # 	ex = Recipe("http://allrecipes.com/Recipe/Amish-Meatloaf/Detail.aspx?soid=carousel_0_rotd&prop24=rotd")
-# 	print ex.find_mapping()
+# 	print ex.find_directions()
 
 # if __name__ == '__main__':
 # 	main()
