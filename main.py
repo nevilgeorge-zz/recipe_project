@@ -1,8 +1,10 @@
 from Recipe import Recipe
 
 def main():
-	ex = Recipe("http://allrecipes.com/Recipe/Spinach-Lasagna-III/Detail.aspx?soid=recs_recipe_3")
-	print ex.find_directions()
+	rec = Recipe("http://allrecipes.com/Recipe/Delicious-Ham-and-Potato-Soup/Detail.aspx?soid=recs_recipe_1")
+	print rec.find_ingredients()
+	print rec.find_preparation()
+	print rec.find_descriptors()
 
 if __name__ == '__main__':
 	main()
