@@ -132,7 +132,8 @@ class Recipe:
     high_gi = gi_dict.keys()
     low_gi = {}
     ingreds = self.ingredients[:]
-    ingreds.remove('water')
+    if 'water' in ingreds:
+      ingreds.remove('water')
     for x in ingreds:
       for y in high_gi:
         score = fuzz.partial_ratio(x, y)
