@@ -6,7 +6,8 @@ We didn't end up with neat code at the end of our last project. Let's try to cha
 - Place all essential logic/code in main.py. What is not "essential" to our project should be in a separate file/module.
 - Create a new file for each class you write. Import them into the main.py script by adding ```from <<filename>> import <<classname>>``` to the top of the script.
 - Class names should start with a capital letter (obviously)
-- If your file is a module that you will later be importing to another file, the file name should also start with a capital letter.
+- If your file is a module that you will later be importing to another file, the file name should also start with a capital letter
+- Feel free to contribute directly to this repo. Ideally, create a new branch and then merge with master when you have your feature working corectly
 
 __Add more to this style guide if you'd like!__
 

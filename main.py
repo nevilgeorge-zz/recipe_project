@@ -1,4 +1,6 @@
 from Recipe import Recipe
+from Tools import Tools
+
 import csv
 
 gi_transform = {}
@@ -17,6 +19,7 @@ def csv_setup():
 
 def main():
   rec = Recipe("http://allrecipes.com/Recipe/Raisin-Cake/Detail.aspx")
+  tools = Tools("http://allrecipes.com/Recipe/Raisin-Cake/Detail.aspx")
   csv_setup()
   print rec.find_ingredients()
   print rec.transform_gi(gi_transform)
@@ -26,3 +29,4 @@ def main():
 
 if __name__ == '__main__':
   main()
+
