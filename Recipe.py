@@ -12,8 +12,12 @@ class Recipe:
     self.link = link
     # list of ingredients
     self.ingredients = []
+    # list of only names from the ingredients
+    self.ingredient_names = []
     # list of the quantities of each ingredient
     self.quantities = []
+    # list of values of the quantities, ie. integers or fractions
+    self.quantity_values = []
     # list of directions from the webpage
     self.directions = []
     # dictionary of ingredients mapped to their quantities. Key: ingredient, Value: quantity
@@ -41,6 +45,24 @@ class Recipe:
 
     self.ingredients = arr
     return arr
+
+  # get only the name of the ingredient from the list we get from the webscraper
+  def find_ingredient_names(self):
+    ings = self.find_ingredients()
+    names = []
+    for i in ings:
+      if ',' in i:
+        # split on comma
+        words = i.split(",")
+        for w in words:
+          if len(w) == 1:
+            names.append(w)
+      else:
+        words = i.split()
+        names.append(words[len(words) - 1])
+
+    self.ingredient_names = names
+    return names
 
   # find all quantities in markup and return a list of all of them (in order)
   def find_quantities(self):
@@ -88,20 +110,52 @@ class Recipe:
     self.measurements = arr
     return arr
 
-  # parse descriptors (preparation and description)
-  def parse_preparation_descriptors(self):
+  # return list of quantity values, ie. integers or fractions
+  def find_quantity_values(self):
+    quantities = self.find_quantities()
+    values = []
+    for q in quantities:
+      words = q.split()
+      val = ""
+      if len(words) > 2:
+        for w in words:
+          if "/" in w or w.isdigit():
+            val += w + " "
+        values.append(val)
+      else:
+        values.append(words[0])
+
+    self.quantity_values = values
+    return values
+    
+  # return preparation key words
+  def find_preparation(self):
     ingredients = self.find_ingredients()
-    preparation = []
-    descriptors = []
+    prep = []
     for i in ingredients:
       words = i.split()
       match_obj = re.match('[a-z]{2,}((ed)|(nd))', i)
       if match_obj:
         match = match_obj.group()
-        preparation.append(match)
       else:
         match = ''
+      prep.append(match)
 
+    self.preparation = prep
+    return prep
+
+
+  # return descriptors
+  def find_descriptors(self):
+    ingredients = self.find_ingredients()
+    desc = []
+    for i in ingredients:
+      words = i.split()
+      match_obj = re.match('[a-z]{2,}((ed)|(nd))', i)
+      if match_obj:
+        match = match_obj.group()
+      else:
+        match = ''
       if len(words) == 2:
         if words[0] != match:
           descriptors.append(words[0])
@@ -112,19 +166,8 @@ class Recipe:
         elif words[1] == match:
           descriptors.append(words[0])
 
-
-    self.preparation = preparation
-    self.descriptors = descriptors
-    
-  # return preparation key words
-  def find_preparation(self):
-    self.parse_preparation_descriptors()
-    return self.preparation
-
-  # return descriptors
-  def find_descriptors(self):
-    self.parse_preparation_descriptors()
-    return self.descriptors
+    self.descriptors = desc
+    return desc
 
   # return a dict of low glycemic index replacements
   # gi_dict: dictionary of replacements from lowgi.csv
