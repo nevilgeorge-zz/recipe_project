@@ -127,6 +127,35 @@ class Recipe:
 
     self.quantity_values = values
     return values
+
+
+  # parse descriptors (preparation and description)
+  # def parse_preparation_descriptors(self):
+  #   ingredients = self.find_ingredients()
+  #   preparation = []
+  #   descriptors = []
+  #   for i in ingredients:
+  #     words = i.split()
+  #     match_obj = re.match('[a-z]{2,}((ed)|(nd))', i)
+  #     if match_obj:
+  #       match = match_obj.group()
+  #       preparation.append(match)
+  #     else:
+  #       match = ''
+
+  #     if len(words) == 2:
+  #       if words[0] != match:
+  #         descriptors.append(words[0])
+
+  #     elif len(words) == 3:
+  #       if words[0] == match:
+  #         descriptors.append(words[1])
+  #       elif words[1] == match:
+  #         descriptors.append(words[0])
+
+
+  #   self.preparation = preparation
+  #   self.descriptors = descriptors
     
   # return preparation key words
   def find_preparation(self):
@@ -156,15 +185,23 @@ class Recipe:
         match = match_obj.group()
       else:
         match = ''
+      
       if len(words) == 2:
         if words[0] != match:
-          descriptors.append(words[0])
+          desc.append(words[0])
+        else:
+          desc.append("")
 
       elif len(words) == 3:
         if words[0] == match:
-          descriptors.append(words[1])
+          desc.append(words[1])
         elif words[1] == match:
-          descriptors.append(words[0])
+          desc.append(words[0])
+        else:
+          desc.append("")
+
+      else:
+        desc.append("")
 
     self.descriptors = desc
     return desc

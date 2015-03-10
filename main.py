@@ -35,13 +35,11 @@ def main():
   rec = Recipe("http://allrecipes.com/Recipe/Raisin-Cake/Detail.aspx")
   tools = Tools("http://allrecipes.com/Recipe/Raisin-Cake/Detail.aspx")
   csv_setup()
-  # print rec.find_quantities()
-  # print rec.find_quantity_values()
-  # print rec.find_mapping()
-  print rec.find_preparation()
-  # print rec.find_descriptors()
-  # print create_json(rec)
-  print rec.find_measurements()
+  print len(rec.find_quantities())
+  print len(rec.find_quantity_values())
+  print len(rec.find_preparation())
+  print len(rec.find_descriptors())
+  print len(rec.find_measurements())
 
 if __name__ == '__main__':
   main()
