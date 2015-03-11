@@ -32,6 +32,16 @@ class Recipe:
     self.low_gi = {}
     # dictionary of ingredients that can have low sodium replacements
     self.low_sod = {}
+    # dictionary of ingredients that can have vegetarian replacements
+    self.veg = {}
+    # dictionary of ingredients that can have pescatarian replacements
+    self.pesc = {}
+    # dictionary of ingredients that can have Italian cuisine replacements
+    self.italian = {}
+    # dictionary of ingredients that can have Asian cuisine replacements
+    self.asian = {}
+
+    self.transforms = {'low_gi':{}, 'low_sod':{}, 'veg':{},'pesc':{},'ita':{},'asi':{}}
     # GET the markup of the URL and store it as a member
     r = requests.get(link)
     self.markup = BeautifulSoup(r.text)
@@ -206,50 +216,32 @@ class Recipe:
     self.descriptors = desc
     return desc
 
-  # return a dict of low glycemic index replacements
-  # gi_dict: dictionary of replacements from lowgi.csv
-  def transform_gi(self, gi_dict):
-    high_gi = gi_dict.keys()
-    low_gi = {}
-    ingreds = self.ingredients[:]
-    if 'water' in ingreds:
+
+
+  # return a dictionary of replacements based on the method from key
+  # trans_dict: dictionary of replacements from appropriate csvs
+  def transform(self, trans_dict, key):
+    old = trans_dict.keys()
+    new = {}
+    ## Case by case removals
+    ingreds = self.ingredients
+    if key == 'low_gi' and 'water' in ingreds:
       ingreds.remove('water')
     for x in ingreds:
-      for y in high_gi:
+      for y in old:
         score = fuzz.partial_ratio(x, y)
         # if ingredient is in dictionary and the current replacement candidate is better than the stored replacement
-        if x in low_gi and score > low_gi[x][1]:
+        if x in new and score >= new[x][1]:
           # replace it
-          low_gi[x] = (gi_dict[y], score)
+          new[x] = (trans_dict[y], score)
         # if ingredient is not in dictionary and the current replacement score is over 85, put it in
-        elif not x in low_gi and score >= 85:
-          low_gi[x] = (gi_dict[y], score)
+        elif not x in new and score >= 85:
+          new[x] = (trans_dict[y], score)
     # take out scores
-    for x in low_gi.keys():
-      low_gi[x] = low_gi[x][0]
-    self.low_gi = low_gi
-    return low_gi
-
-  # return a dictionary of low sodium replacements
-  # sod_dict: dictionary of replacements from lowsodium.csv
-  def transform_sodium(self, sod_dict):
-    high_sod = sod_dict.keys()
-    low_sod = {}
-    for x in self.ingredients:
-      for y in high_sod:
-        score = fuzz.partial_ratio(x, y)
-        # if ingredient is in dictionary and the current replacement candidate is better than the stored replacement
-        if x in low_sod and score >= low_sod[x][1]:
-          # replace it
-          low_sod[x] = (sod_dict[y], score)
-        # if ingredient is not in dictionary and the current replacement score is over 85, put it in
-        elif not x in low_sod and score >= 85:
-          low_sod[x] = (sod_dict[y], score)
-    # take out scores
-    for x in low_sod.keys():
-      low_sod[x] = low_sod[x][0]
-    self.low_sod = low_sod
-    return low_sod
+    for x in new.keys():
+      new[x] = new[x][0]
+    self.transforms[key] = new
+    return new
 
 # def main():
 #   ex = Recipe("http://allrecipes.com/Recipe/Amish-Meatloaf/Detail.aspx?soid=carousel_0_rotd&prop24=rotd")
