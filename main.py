@@ -1,6 +1,7 @@
 from Recipe import Recipe
 from Tools import Tools
-
+from PrimaryMethods import PrimaryMethods
+from OtherMethods import OtherMethods
 import csv
 
 gi_transform = {}
@@ -33,7 +34,19 @@ def create_json(rec):
     current["preparator"] = preps[i]
     result["ingredients"].append(current)
 
-  result["primary cooking method"] = ""
+  # get primary methods
+  primethods = PrimaryMethods(rec.link)
+  result["primary cooking method"] = primethods.find_methods()
+  
+  # get other methods
+  othermethods = OtherMethods(rec.link)
+  if result["primary cooking method"] in othermethods.find_methods():
+    othermethodslist = othermethods.find_methods()
+    othermethodslist.remove(result["primary cooking method"])
+    result["cooking methods"] = othermethodslist
+  else:
+    result["cooking methods"] = othermethods.find_methods()
+
   # get tools
   tool = Tools(rec.link)
   result["cooking tools"] = tool.find_tools()
@@ -41,7 +54,7 @@ def create_json(rec):
 
 
 def main():
-  rec = Recipe("http://allrecipes.com/Recipe/Raisin-Cake/Detail.aspx")
+  rec = Recipe("http://allrecipes.com/Recipe/Chef-Johns-Lasagna/Detail.aspx?evt19=1&referringHubId=17245")
   tools = Tools(rec.link)
   csv_setup()
   # print len(rec.find_quantities())
