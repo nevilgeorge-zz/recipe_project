@@ -217,7 +217,6 @@ class Recipe:
     return desc
 
 
-
   # return a dictionary of replacements based on the method from key
   # trans_dict: dictionary of replacements from appropriate csvs
   def transform(self, trans_dict, key):

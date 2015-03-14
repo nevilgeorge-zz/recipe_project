@@ -78,6 +78,36 @@ def create_json(rec):
   result["cooking tools"] = tool.find_tools()
   return result
 
+def ti_get_link():
+  print "Welcome to the Recipe Transformer!"
+  link = raw_input("Please enter the full AllRecipes.com link of your recipe: ")
+  try:
+    rec = Recipe(link)
+    tools = Tools(link)
+    csv_setup()
+  except:
+    print "Oops, there was a slight issue. Try again!"
+    ti_get_link()
+  ti_transform(rec, tools)
+
+def ti_transform(recipe, tools):
+  print sod_transform
+  print "What transformation would you like?"
+  print "---------------"
+  print "1. Change recipe to low sodium"
+  print "2. Change recipe to low glycemic index"
+  print "3. Change recipe to vegetarian"
+  print "4. Last transformation"
+  print "---------------"
+  transform_input = raw_input("Enter your selection: ")
+  if transform_input == "1":
+    print recipe.transform_sodium(sod_transform)
+  elif transform_input == "2":
+    print recipe.transform_gi(gi_transform)
+  elif transform_input == "3":
+    return None
+  elif transform_input == "4":
+    return None
 
 def main():
   rec = Recipe("http://allrecipes.com/Recipe/Chef-Johns-Lasagna/Detail.aspx?evt19=1&referringHubId=17245")
