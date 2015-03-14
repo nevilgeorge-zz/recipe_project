@@ -52,6 +52,13 @@ def create_json(rec):
   result["cooking tools"] = tool.find_tools()
   return result
 
+#def create_transformed_ingredients(obj):
+
+def trans_sodium(rec):
+  obj = rec.transform_sodium(sod_transform)
+  return obj
+
+
 
 def main():
   rec = Recipe("http://allrecipes.com/Recipe/Chef-Johns-Lasagna/Detail.aspx?evt19=1&referringHubId=17245")
@@ -62,7 +69,7 @@ def main():
   # print len(rec.find_preparation())
   # print len(rec.find_descriptors())
   # print len(rec.find_measurements())
-  print create_json(rec)
+  print trans_sodium(rec)
 
 if __name__ == '__main__':
   main()
