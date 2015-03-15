@@ -241,7 +241,27 @@ class Recipe:
     for x in new.keys():
       new[x] = new[x][0]
     self.transforms[key] = new
+    self.commit_transform(key)
     return new
+
+  ## Changes directions
+  def commit_transform(self,key):
+    temp_dir = []
+    for i, j in self.transforms[key].iteritems():
+      for step in self.directions:
+        temp_step = str(step)
+        temp_dir.append(temp_step.replace(str(i),str(j)))
+      self.directions = temp_dir
+      temp_dir = []
+      
+      
+      
+      
+      
+      
+        
+        
+      
 
 # def main():
 #   ex = Recipe("http://allrecipes.com/Recipe/Amish-Meatloaf/Detail.aspx?soid=carousel_0_rotd&prop24=rotd")
