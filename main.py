@@ -81,14 +81,14 @@ def create_json(rec):
 def ti_get_link():
   print "Welcome to the Recipe Transformer!"
   link = raw_input("Please enter the full AllRecipes.com link of your recipe: ")
-  try:
-    rec = Recipe(link)
-    tools = Tools(link)
+  #try:
+  rec = Recipe(link)
+  tools = Tools(link)
     
-    ti_transform(rec, tools)
-  except:
-    print "Oops, there was a slight issue. Try again!"
-    ti_get_link()
+  ti_transform(rec, tools)
+  #except:
+  #  print "Oops, there was a slight issue. Try again!"
+  #  ti_get_link()
   
 
 def ti_transform(recipe, tools):
@@ -100,6 +100,7 @@ def ti_transform(recipe, tools):
   print "4. Change recipe to pescetarian"
   print "5. Change to Asian"
   print "6. Change to Italian"
+  print "7. Show recipe information"
   print "---------------"
   transform_input = raw_input("Enter your selection: ")
   if transform_input == "1":
@@ -114,6 +115,10 @@ def ti_transform(recipe, tools):
     print recipe.transform(asi_transform, "asi")
   elif transform_input == "6":
     print recipe.transform(ita_transform, "ita")
+  elif transform_input == "7":
+    print recipe.print_recipe_information()
+    print tools.print_tools()
+  print recipe.print_directions()
   print recipe.print_ingredient_transforms()
 
 def main():
