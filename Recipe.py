@@ -217,10 +217,10 @@ class Recipe:
     return desc
 
 
-
   # return a dictionary of replacements based on the method from key
   # trans_dict: dictionary of replacements from appropriate csvs
   def transform(self, trans_dict, key):
+    ingredients = self.find_ingredients()
     old = trans_dict.keys()
     new = {}
     ## Case by case removals
@@ -254,7 +254,11 @@ class Recipe:
       self.directions = temp_dir
       temp_dir = []
       
-      
+  # pretty print the changes
+  def print_ingredient_transforms(self):
+    for transform_type in self.transforms:
+      for ingredient_name in self.transforms[transform_type]:
+        print "Change %s to %s" % (ingredient_name, self.transforms[transform_type][ingredient_name])
       
       
       
