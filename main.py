@@ -46,6 +46,7 @@ def csv_setup():
 def create_json(rec):
   result = {}
   result["ingredients"] = []
+  rec = Recipe(rec)
   names = rec.find_ingredient_names()
   quantities = rec.find_quantity_values()
   measurements = rec.find_measurements()
@@ -80,7 +81,7 @@ def create_json(rec):
 
 
 def main():
-  rec = Recipe("http://allrecipes.com/Recipe/Chef-Johns-Lasagna/Detail.aspx?evt19=1&referringHubId=17245")
+  #rec = Recipe("http://allrecipes.com/Recipe/Easy-Garlic-Broiled-Chicken/")
   tools = Tools(rec.link)
   csv_setup()
   #print rec.find_quantities()
@@ -88,7 +89,7 @@ def main():
   #print rec.find_preparation()
   #print rec.find_descriptors()
   #print rec.find_measurements()
-  print rec.find_ingredients()
+  #print rec.find_ingredients()
   #print rec.find_directions()
   #print rec.transform(gi_transform,'low_gi')
   #print rec.transform(sod_transform,'low_sod')
@@ -96,7 +97,7 @@ def main():
   #print rec.transform(pesc_transform,'pesc')
   #print rec.transform(ita_transform,'ita')
   #print rec.transform(asi_transform,'asi')
-  #print create_json(rec)
+  print create_json("http://allrecipes.com/Recipe/Easy-Garlic-Broiled-Chicken/")
 
 if __name__ == '__main__':
   main()
