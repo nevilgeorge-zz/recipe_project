@@ -24,7 +24,8 @@ Please install the following libraries before running the program (use your favo
 
 ## Getting started
 #### Running our system
-
+run "python main.py" to run our recipe parser.
+in "main.py", in the "main()" function, the function "ti_get_link()" will open our text interface to create transformations of a recipe.
 
 #### Running the autograder
-
+run "python autograder.py text url.txt", where url.txt is a text file containing the url of the AllRecipes recipe you would like to evaluate.
