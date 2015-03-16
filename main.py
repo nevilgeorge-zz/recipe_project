@@ -84,49 +84,41 @@ def ti_get_link():
   try:
     rec = Recipe(link)
     tools = Tools(link)
-    csv_setup()
+    
+    ti_transform(rec, tools)
   except:
     print "Oops, there was a slight issue. Try again!"
     ti_get_link()
-  ti_transform(rec, tools)
+  
 
 def ti_transform(recipe, tools):
-  print sod_transform
   print "What transformation would you like?"
   print "---------------"
   print "1. Change recipe to low sodium"
   print "2. Change recipe to low glycemic index"
   print "3. Change recipe to vegetarian"
-  print "4. Last transformation"
+  print "4. Change recipe to pescetarian"
+  print "5. Change to Asian"
+  print "6. Change to Italian"
   print "---------------"
   transform_input = raw_input("Enter your selection: ")
   if transform_input == "1":
-    print recipe.transform_sodium(sod_transform)
+    print recipe.transform(sod_transform, "low_sod")
   elif transform_input == "2":
-    print recipe.transform_gi(gi_transform)
+    print recipe.transform(gi_transform, "low_gi")
   elif transform_input == "3":
-    return None
+    print recipe.transform(veg_transform, "veg")
   elif transform_input == "4":
-    return None
+    print recipe.transform(pesc_transform, "pesc")
+  elif transform_input == "5":
+    print recipe.transform(asi_transform, "asi")
+  elif transform_input == "6":
+    print recipe.transform(ita_transform, "ita")
+  print recipe.print_ingredient_transforms()
 
 def main():
-  rec = Recipe("http://allrecipes.com/Recipe/Chef-Johns-Lasagna/Detail.aspx?evt19=1&referringHubId=17245")
-  tools = Tools(rec.link)
   csv_setup()
-  #print rec.find_quantities()
-  #print rec.find_quantity_values()
-  #print rec.find_preparation()
-  #print rec.find_descriptors()
-  #print rec.find_measurements()
-  print rec.find_ingredients()
-  #print rec.find_directions()
-  #print rec.transform(gi_transform,'low_gi')
-  #print rec.transform(sod_transform,'low_sod')
-  #print rec.transform(veg_transform,'veg')
-  #print rec.transform(pesc_transform,'pesc')
-  #print rec.transform(ita_transform,'ita')
-  #print rec.transform(asi_transform,'asi')
-  #print create_json(rec)
+  ti_get_link()
 
 if __name__ == '__main__':
   main()
