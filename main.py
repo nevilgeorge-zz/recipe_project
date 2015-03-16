@@ -79,11 +79,55 @@ def create_json(rec):
   result["cooking tools"] = tool.find_tools()
   return result
 
+def ti_get_link():
+  print "Welcome to the Recipe Transformer!"
+  link = raw_input("Please enter the full AllRecipes.com link of your recipe: ")
+  #try:
+  rec = Recipe(link)
+  tools = Tools(link)
+    
+  ti_transform(rec, tools)
+  #except:
+  #  print "Oops, there was a slight issue. Try again!"
+  #  ti_get_link()
+  
+
+def ti_transform(recipe, tools):
+  print "What transformation would you like?"
+  print "---------------"
+  print "1. Change recipe to low sodium"
+  print "2. Change recipe to low glycemic index"
+  print "3. Change recipe to vegetarian"
+  print "4. Change recipe to pescetarian"
+  print "5. Change to Asian"
+  print "6. Change to Italian"
+  print "7. Show recipe information"
+  print "---------------"
+  transform_input = raw_input("Enter your selection: ")
+  if transform_input == "1":
+    print recipe.transform(sod_transform, "low_sod")
+  elif transform_input == "2":
+    print recipe.transform(gi_transform, "low_gi")
+  elif transform_input == "3":
+    print recipe.transform(veg_transform, "veg")
+  elif transform_input == "4":
+    print recipe.transform(pesc_transform, "pesc")
+  elif transform_input == "5":
+    print recipe.transform(asi_transform, "asi")
+  elif transform_input == "6":
+    print recipe.transform(ita_transform, "ita")
+  elif transform_input == "7":
+    print recipe.print_recipe_information()
+    print tools.print_tools()
+  print recipe.print_directions()
+  print recipe.print_ingredient_transforms()
 
 def main():
-  #rec = Recipe("http://allrecipes.com/Recipe/Easy-Garlic-Broiled-Chicken/")
+  rec = Recipe("http://allrecipes.com/Recipe/Easy-Garlic-Broiled-Chicken/")
   tools = Tools(rec.link)
   csv_setup()
+  #ti_get_link()
+
   #print rec.find_quantities()
   #print rec.find_quantity_values()
   #print rec.find_preparation()

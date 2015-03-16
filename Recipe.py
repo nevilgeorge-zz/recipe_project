@@ -8,26 +8,29 @@ class Recipe:
 
   # constructor takes in a link of a recipe from allRecipes.com
   def __init__(self, link):
+    # GET the markup of the URL and store it as a member
+    r = requests.get(link)
+    self.markup = BeautifulSoup(r.text)
     # web URL of the allRecipes link we are using in this instance of the Recipe
     self.link = link
     # list of ingredients
-    self.ingredients = []
+    self.ingredients = self.find_ingredients()
     # list of only names from the ingredients
-    self.ingredient_names = []
+    self.ingredient_names = self.find_ingredient_names()
     # list of the quantities of each ingredient
-    self.quantities = []
+    self.quantities = self.find_quantities()
     # list of values of the quantities, ie. integers or fractions
-    self.quantity_values = []
+    self.quantity_values = self.find_quantity_values()
     # list of directions from the webpage
-    self.directions = []
+    self.directions = self.find_directions()
     # dictionary of ingredients mapped to their quantities. Key: ingredient, Value: quantity
-    self.mapping = {}
+    self.mapping = self.find_mapping()
     # list of measurements retrieved from the quantities
-    self.measurements = []
+    self.measurements = self.find_measurements()
     # list of preparation key words
-    self.preparation = []
+    self.preparation = self.find_preparation()
     # list of descriptors of ingredients
-    self.descriptors = []
+    self.descriptors = self.find_descriptors()
     # dictionary of ingredients that can have low glycemic index replacements
     self.low_gi = {}
     # dictionary of ingredients that can have low sodium replacements
@@ -42,9 +45,7 @@ class Recipe:
     self.asian = {}
 
     self.transforms = {'low_gi':{}, 'low_sod':{}, 'veg':{},'pesc':{},'ita':{},'asi':{}}
-    # GET the markup of the URL and store it as a member
-    r = requests.get(link)
-    self.markup = BeautifulSoup(r.text)
+
 
   # find all ingredients in markup and return a list of all of them (in order)
   def find_ingredients(self):
@@ -58,7 +59,7 @@ class Recipe:
 
   # get only the name of the ingredient from the list we get from the webscraper
   def find_ingredient_names(self):
-    ings = self.find_ingredients()
+    ings = self.ingredients
     names = []
     for i in ings:
       if ',' in i:
@@ -86,8 +87,8 @@ class Recipe:
 
   # returns a dictionary of each ingredient mapped to its associated quantity required
   def find_mapping(self):
-    ingredients = self.find_ingredients()
-    quantities = self.find_quantities()
+    ingredients = self.ingredients
+    quantities = self.quantities
     returnDict = {}
     if len(ingredients) != len(quantities):
       return {}
@@ -109,7 +110,7 @@ class Recipe:
 
   # find measurements from quantities
   def find_measurements(self):
-    quantities = self.find_quantities()
+    quantities = self.quantities
     arr = []
     for el in quantities:
       words = el.split()
@@ -122,7 +123,7 @@ class Recipe:
 
   # return list of quantity values, ie. integers or fractions
   def find_quantity_values(self):
-    quantities = self.find_quantities()
+    quantities = self.quantities
     values = []
     for q in quantities:
       words = q.split()
@@ -169,7 +170,7 @@ class Recipe:
     
   # return preparation key words
   def find_preparation(self):
-    ingredients = self.find_ingredients()
+    ingredients = self.ingredients
     prep = []
     for i in ingredients:
       words = i.split()
@@ -186,7 +187,7 @@ class Recipe:
 
   # return descriptors
   def find_descriptors(self):
-    ingredients = self.find_ingredients()
+    ingredients = self.ingredients
     desc = []
     for i in ingredients:
       words = i.split()
@@ -217,10 +218,10 @@ class Recipe:
     return desc
 
 
-
   # return a dictionary of replacements based on the method from key
   # trans_dict: dictionary of replacements from appropriate csvs
   def transform(self, trans_dict, key):
+    ingredients = self.ingredients
     old = trans_dict.keys()
     new = {}
     ## Case by case removals
@@ -253,10 +254,44 @@ class Recipe:
         temp_dir.append(temp_step.replace(str(i),str(j)))
       self.directions = temp_dir
       temp_dir = []
+    return self.directions
       
-      
-      
-      
+  # pretty print the changes
+  def print_ingredient_transforms(self):
+    for transform_type in self.transforms:
+      for ingredient_name in self.transforms[transform_type]:
+        print "Change %s to %s" % (ingredient_name, self.transforms[transform_type][ingredient_name])
+
+  # pretty print the directions
+
+  def print_directions(self):
+    count = 1
+    for el in self.directions:
+      print "%d. %s\n" % (count, el)
+      count += 1
+
+  def print_recipe_information(self):
+    print "--Ingredients--"
+    for x in self.ingredients:
+      if x != '':
+        print "%s" % x
+    print "--Quantities--"
+    for x in self.quantities:
+      if x != '':
+        print "%s" % x
+    print "--Measurements--"
+    for x in self.measurements:
+      if x != '':
+        print "%s" % x
+    print "--Descriptors--"
+    for x in self.descriptors:
+      if x != '':
+        print "%s" % x
+    print "--Preparation--"
+    for x in self.preparation:
+      if x != '':
+        print "%s" % x
+    print "--Tools--"
       
       
         
