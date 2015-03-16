@@ -75,13 +75,15 @@ def main():
   #print rec.find_preparation()
   #print rec.find_descriptors()
   #print rec.find_measurements()
+  print rec.find_ingredients()
+  #print rec.find_directions()
   #print rec.transform(gi_transform,'low_gi')
   #print rec.transform(sod_transform,'low_sod')
   #print rec.transform(veg_transform,'veg')
   #print rec.transform(pesc_transform,'pesc')
   #print rec.transform(ita_transform,'ita')
   #print rec.transform(asi_transform,'asi')
-  print create_json(rec)
+  #print create_json(rec)
 
 if __name__ == '__main__':
   main()
