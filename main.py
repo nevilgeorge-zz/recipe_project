@@ -126,7 +126,7 @@ def main():
   rec = Recipe("http://allrecipes.com/Recipe/Easy-Garlic-Broiled-Chicken/")
   tools = Tools(rec.link)
   csv_setup()
-  #ti_get_link()
+  ti_get_link()
 
   #print rec.find_quantities()
   #print rec.find_quantity_values()
